@@ -22,7 +22,7 @@ jobs:
       - name: Installeer .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0.x'  # Gebruik de juiste versie voor MAUI
+          dotnet-version: '8.0.x'  # Gebruik de juiste versie voor MAUI
  
       - name: Installeer MAUI workloads
         run: dotnet workload install maui
@@ -31,7 +31,7 @@ jobs:
         run: dotnet restore
  
       - name: Bouw de applicatie
-        run: dotnet build --configuration Release -f net9.0-windows10.0.19041.0 Grocery.App/Grocery.App.csproj /p:RuntimeIdentifierOverride=win-x64
+        run: dotnet build --configuration Release -f net8.0-windows10.0.19041.0 /p:RuntimeIdentifierOverride=win-x64
  
       - name: Voer unit tests uit
-        run: dotnet test --configuration Release --no-restore --verbosity normal TestCore\TestCore.csproj
+        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
