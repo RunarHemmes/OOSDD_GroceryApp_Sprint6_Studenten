@@ -4,6 +4,7 @@ using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
 using Grocery.Core.Services;
 using Grocery.App.Views;
+using Grocery.Core.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -50,14 +51,17 @@ namespace Grocery.App.ViewModels
             Products = new(productService.GetAll());
         }
 
-        partial void OnSelectedProductChanged(Product? oldValue, Product newValue)
+        partial void OnSelectedProductChanged(Product? oldValue, Product product)
         {
-            //BoughtProductsList.Clear();
-            //List<BoughtProducts> list = _boughtProductsService.Get(newValue.Id);
-            //foreach (var item in list)
-            //{
-            //    BoughtProductsList.Add(item);
-            //}
+            SelectedProduct = product;
+            NewName = product.Name;
+            NewStock = product.Stock;
+            NewShelfLife = product.ShelfLife;
+            NewShelfLifeYear = product.ShelfLife.Year;
+            NewShelfLifeMonth = product.ShelfLife.Month;
+            NewShelfLifeDay = product.ShelfLife.Day;
+            NewPrice = product.Price.ToString();
+            Message = "";
         }
 
         [RelayCommand]
@@ -68,12 +72,14 @@ namespace Grocery.App.ViewModels
                 NewShelfLife = new DateOnly(NewShelfLifeYear, NewShelfLifeMonth, NewShelfLifeDay);
                 decimal price = decimal.Parse(NewPrice, CultureInfo.InvariantCulture);
                 price = price / 100;
+                int id = SelectedProduct.Id;
 
-                if (_productService.CheckProductInfo(NewName, NewStock, NewShelfLife, price))
+                if (ProductHelper.CheckProductInfo(NewName, NewStock, NewShelfLife, price))
                 {
-                    Product newProduct = new Product(0, NewName, NewStock, NewShelfLife, price);
-                    _productService.Add(newProduct);
+                    Product newProduct = new Product(id, NewName, NewStock, NewShelfLife, price);
+                    _productService.Update(newProduct);
                     GoToProducts();
+                    Message = "";
                 }
                 else
                 {

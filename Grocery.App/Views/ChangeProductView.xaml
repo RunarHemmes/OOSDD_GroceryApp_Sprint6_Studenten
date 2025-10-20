@@ -31,7 +31,7 @@
                 <Entry Placeholder="Maand" Text="{Binding NewShelfLifeMonth}" />
                 <Entry Placeholder="Dag" Text="{Binding NewShelfLifeDay}" />
                 <Entry Placeholder="Prijs" Text="{Binding NewPrice}" />
-                <Button Text="Maak product" Command="{Binding CreateProductCommand}" />
+                <Button Text="Opslaan" Command="{Binding CreateProductCommand}" />
                 <Label Text="{Binding Message}" TextColor="Red" />
             </StackLayout>
         </Border>

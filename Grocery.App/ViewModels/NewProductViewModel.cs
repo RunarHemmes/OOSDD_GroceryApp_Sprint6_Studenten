@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Grocery.App.Views;
+using Grocery.Core.Helpers;
 using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
 using System.Globalization;
@@ -49,7 +50,7 @@ namespace Grocery.App.ViewModels
                 decimal price = decimal.Parse(NewPrice, CultureInfo.InvariantCulture);
                 price = price / 100;
 
-                if (_productService.CheckProductInfo(NewName, NewStock, NewShelfLife, price))
+                if (ProductHelper.CheckProductInfo(NewName, NewStock, NewShelfLife, price))
                 {
                     Product newProduct = new Product(0, NewName, NewStock, NewShelfLife, price);
                     _productService.Add(newProduct);
@@ -64,16 +65,11 @@ namespace Grocery.App.ViewModels
             {
                 Message = "De ingevulde gegevens zijn niet geldig, probeer het aub opnieuw.";
             }
-            
-            
-
         }
 
         private async Task GoToProducts()
         {
             await Shell.Current.GoToAsync(nameof(ProductView));
         }
-
-
     }
 }

@@ -14,6 +14,6 @@ namespace Grocery.Core.Interfaces.Services
 
         public Product? Update(Product item);
 
-        public bool CheckProductInfo(string name, int stock, DateOnly shelfLife, decimal price);
+        //public bool CheckProductInfo(string name, int stock, DateOnly shelfLife, decimal price);
     }
 }
