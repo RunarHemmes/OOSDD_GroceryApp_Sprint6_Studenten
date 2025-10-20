@@ -34,9 +34,10 @@ jobs:
         run: dotnet build --configuration Release -f net8.0-windows10.0.19041.0 Grocery.App/Grocery.App.csproj /p:RuntimeIdentifierOverride=win-x64
  
       - name: Voer unit tests uit
-        run: dotnet test --configuration Release --no-restore --verbosity normal TestCore\TestCore.csproj
+        run: dotnet test --configuration Release --no-restore --verbosity normal TestCore\TestCore.csproj --logger "NUnit;LogFilePath=test-results.xml"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: path/to/artifact/
+          name: results
+          path: test-results.xml
