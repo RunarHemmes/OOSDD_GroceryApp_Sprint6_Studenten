@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Grocery.App.ViewModels"
+             xmlns:m="clr-namespace:Grocery.Core.Models;assembly=Grocery.Core"
+             x:Class="Grocery.App.Views.ChangeProductView"
+             x:DataType="vm:ChangeProductViewModel"
+             Title="ChangeProductView">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Picker Grid.Column="0" Grid.Row="0" Margin="10,0,0,0" Title="Klik op onderstaand pijltje om een product te selecteren:"
+        ItemsSource="{Binding Products}"
+        SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" 
+        SelectedIndexChanged="Picker_SelectedIndexChanged"
+        BackgroundColor="{StaticResource Primary}"
+            TextColor="{StaticResource Secondary}">
+        </Picker>
+        <Border Grid.Row="1" Grid.Column="0" Stroke="#C49B33" StrokeThickness="4" Padding="5" Margin="5" HorizontalOptions="Center">
+            <StackLayout Padding="20" VerticalOptions="Center">
+                <Label Text="Login" FontSize="24" HorizontalOptions="Center" />
+                <Entry Placeholder="Productnaam" Text="{Binding NewName}" />
+                <Entry Placeholder="Voorraad" Text="{Binding NewStock}" />
+                <Entry Placeholder="Jaar" Text="{Binding NewShelfLifeYear}" />
+                <Entry Placeholder="Maand" Text="{Binding NewShelfLifeMonth}" />
+                <Entry Placeholder="Dag" Text="{Binding NewShelfLifeDay}" />
+                <Entry Placeholder="Prijs" Text="{Binding NewPrice}" />
+                <Button Text="Maak product" Command="{Binding CreateProductCommand}" />
+                <Label Text="{Binding Message}" TextColor="Red" />
+            </StackLayout>
+        </Border>
+    </Grid>
+</ContentPage>
