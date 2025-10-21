@@ -1,18 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Grocery.App.Views;
-using Grocery.Core.Helpers;
 using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
+using Grocery.Core.Services;
+using Grocery.App.Views;
+using Grocery.Core.Helpers;
+using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Grocery.App.ViewModels
 {
-    public partial class NewProductViewModel : BaseViewModel
+    public partial class ChangeProductViewModel : BaseViewModel
     {
         private readonly IProductService _productService;
-        
+
+        [ObservableProperty]
+        Product selectedProduct;
+
         [ObservableProperty]
         private string? newName;
 
@@ -22,10 +27,10 @@ namespace Grocery.App.ViewModels
         private DateOnly NewShelfLife { get; set; }
 
         [ObservableProperty]
-        private int newShelfLifeYear; 
+        private int newShelfLifeYear;
 
         [ObservableProperty]
-        private int newShelfLifeMonth; 
+        private int newShelfLifeMonth;
 
         [ObservableProperty]
         private int newShelfLifeDay;
@@ -36,9 +41,27 @@ namespace Grocery.App.ViewModels
         [ObservableProperty]
         private string? message;
 
-        public NewProductViewModel(IProductService productService)
+        //public ObservableCollection<BoughtProducts> BoughtProductsList { get; set; } = [];
+
+        public ObservableCollection<Product> Products { get; set; }
+
+        public ChangeProductViewModel(IProductService productService) 
         {
             _productService = productService;
+            Products = new(productService.GetAll());
+        }
+
+        partial void OnSelectedProductChanged(Product? oldValue, Product product)
+        {
+            SelectedProduct = product;
+            NewName = product.Name;
+            NewStock = product.Stock;
+            NewShelfLife = product.ShelfLife;
+            NewShelfLifeYear = product.ShelfLife.Year;
+            NewShelfLifeMonth = product.ShelfLife.Month;
+            NewShelfLifeDay = product.ShelfLife.Day;
+            NewPrice = product.Price.ToString();
+            Message = "";
         }
 
         [RelayCommand]
@@ -49,12 +72,14 @@ namespace Grocery.App.ViewModels
                 NewShelfLife = new DateOnly(NewShelfLifeYear, NewShelfLifeMonth, NewShelfLifeDay);
                 decimal price = decimal.Parse(NewPrice, CultureInfo.InvariantCulture);
                 price = price / 100;
+                int id = SelectedProduct.Id;
 
                 if (ProductHelper.CheckProductInfo(NewName, NewStock, NewShelfLife, price))
                 {
-                    Product newProduct = new Product(0, NewName, NewStock, NewShelfLife, price);
-                    _productService.Add(newProduct);
+                    Product newProduct = new Product(id, NewName, NewStock, NewShelfLife, price);
+                    _productService.Update(newProduct);
                     GoToProducts();
+                    Message = "";
                 }
                 else
                 {
@@ -70,6 +95,12 @@ namespace Grocery.App.ViewModels
         private async Task GoToProducts()
         {
             await Shell.Current.GoToAsync(nameof(ProductView));
+        }
+
+        [RelayCommand]
+        public void NewSelectedProduct(Product product)
+        {
+            SelectedProduct = product;
         }
     }
 }
