@@ -38,16 +38,14 @@ namespace Grocery.Core.Services
             return _productRepository.Update(item);
         }
 
-        public bool CheckProductInfo(string name, int stock, DateOnly shelfLife, decimal price)
-        {
-            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
-            if (name != null && stock >= 0 && shelfLife > today && price >= 0)
-            {
-                return true;
-            }
-            return false;
-
-            
-        }
+        //public bool CheckProductInfo(string name, int stock, DateOnly shelfLife, decimal price)
+        //{
+        //    DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+        //    if (0 < name.Length && name.Length < 80 && stock >= 0 && shelfLife > today && price >= 0)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
     }
 }

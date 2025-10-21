@@ -26,5 +26,11 @@ namespace Grocery.App.ViewModels
         {
             if (Client.Role == Role.Admin) await Shell.Current.GoToAsync(nameof(NewProductView));
         }
+
+        [RelayCommand]
+        private async Task GoToChangeProduct()
+        {
+            if (Client.Role == Role.Admin) await Shell.Current.GoToAsync(nameof(ChangeProductView));
+        }
     }
 }

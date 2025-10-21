@@ -8,6 +8,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Nieuw product" Command="{Binding GoToNewProductCommand}"/>
+        <ToolbarItem Text="Wijzig product" Command="{Binding GoToChangeProductCommand}"/>
     </ContentPage.ToolbarItems>
 
     <Shell.TitleView>
